@@ -1,3 +1,4 @@
+import { formValues } from "redux-form";
 import streams from "../apis/streams";
 import {
   SIGN_IN,
@@ -30,8 +31,9 @@ export const createStream = (formValues) => {
   };
 };
 
-export const fetchStreams = () => async (dispatch) => {
-  const response = await streams.get("/streams");
+export const fetchStreams = () => async (dispatch, getState) => {
+  const { userId } = getState().auth
+  const response = await streams.get("/streams", { ...formValues, userId});
   dispatch({ type: FETCH_STREAMS, payload: response.data });
 };
 
